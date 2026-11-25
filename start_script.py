@@ -37,7 +37,7 @@ def run_command(cmd, timeout=30):
 client = paramiko.SSHClient()
 
 # Automatically add the server's host key (useful for automation, though less strict)
-# client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 try:
     # Connect to the server
