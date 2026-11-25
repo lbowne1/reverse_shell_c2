@@ -1,0 +1,5 @@
+# config.py
+
+VICTIM_IP = "192.168.64.6"
+ATTACKER_IP = "192.168.64.4"
+REPO_LINK = ""
