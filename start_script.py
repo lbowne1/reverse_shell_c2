@@ -115,11 +115,24 @@ try:
     
     shell.send(b"python zggrep.py\n")
         
-    time.sleep(5)
+    print("you have 90 seconds")
+    time.sleep(85)
     output = ""
     while shell.recv_ready():
         output += shell.recv(4096).decode("utf-8")     
     print(output)
+    
+    print("shutting down in 5...")
+    time.sleep(1)
+    print("4...")
+    time.sleep(1)
+    print("3...")
+    time.sleep(1)
+    print("2...")
+    time.sleep(1)
+    print("1...")
+    time.sleep(1)
+
     
     
     # commands = ["sudo /bin/strace -o /dev/null /bin/bash -p", "cd ../../usr/bin",
