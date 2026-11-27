@@ -115,7 +115,7 @@ try:
     
     shell.send(b"python zggrep.py\n")
         
-    time.sleep(1)
+    time.sleep(5)
     output = ""
     while shell.recv_ready():
         output += shell.recv(4096).decode("utf-8")     
